@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HotLabel Integration Example</title>
+    <script src="https://unpkg.com/hotlabel-client/dist/hotlabel.js"></script>
+</head>
+<body>
+    <h1>HotLabel Integration Demo</h1>
+    
+    <script>
+        // Initialize HotLabel
+        HotLabel.init({
+            publisherId: 'demo-website-001',
+            triggerOptions: {
+                mode: 'adaptive',
+                frequency: 'once-per-session'
+            },
+            privacySettings: {
+                anonymize: true,
+                consentRequired: true
+            }
+        });
+
+        // Optional: Manually trigger a task
+        function triggerLabelingTask() {
+            HotLabel.triggerTask({
+                taskType: 'content-annotation',
+                category: 'website-feedback'
+            });
+        }
+    </script>
+</body>
+</html>
