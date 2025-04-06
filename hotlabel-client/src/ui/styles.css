@@ -1,0 +1,162 @@
+/* HotLabel Modal Styles */
+.hotlabel-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  .hotlabel-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .hotlabel-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .hotlabel-modal-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .hotlabel-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .hotlabel-modal-close:hover {
+    color: #333;
+  }
+  
+  .hotlabel-modal-body {
+    padding: 20px;
+  }
+  
+  .hotlabel-modal-body h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .hotlabel-task-input,
+  .hotlabel-task-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .hotlabel-task-metadata {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .hotlabel-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .hotlabel-modal-submit,
+  .hotlabel-modal-cancel {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .hotlabel-modal-submit {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .hotlabel-modal-submit:hover {
+    background-color: #45a049;
+  }
+  
+  .hotlabel-modal-cancel {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .hotlabel-modal-cancel:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Rating Stars */
+  .hotlabel-rating-stars {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .hotlabel-star-input {
+    display: none;
+  }
+  
+  .hotlabel-star-label {
+    color: #ddd;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  
+  .hotlabel-star-input:checked ~ .hotlabel-star-label,
+  .hotlabel-star-label:hover,
+  .hotlabel-star-label:hover ~ .hotlabel-star-label {
+    color: #ffd700;
+  }
+  
+  /* Difficulty Options */
+  .hotlabel-difficulty-options {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .hotlabel-difficulty-options label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .hotlabel-difficulty-options input {
+    margin-right: 5px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .hotlabel-modal-content {
+      width: 95%;
+      margin: 0 auto;
+    }
+  }
