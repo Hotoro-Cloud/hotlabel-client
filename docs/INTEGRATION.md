@@ -1,141 +1,163 @@
 # HotLabel Integration Guide
 
-## Scenario: Integrating HotLabel into a Tech Blog
+## Table of Contents
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Configuration](#configuration)
+4. [Task Types](#task-types)
+5. [Privacy Management](#privacy-management)
+6. [Advanced Integration](#advanced-integration)
 
-### 1. Basic HTML Integration
+## Installation
 
-A developer would add the HotLabel script to their website's HTML, typically in the `<head>` or at the end of the `<body>` tag:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Tech Blog</title>
-    <!-- Other head elements -->
-    
-    <!-- HotLabel Integration Script -->
-    <script src="https://cdn.hotlabel.ai/hotlabel.js"></script>
-</head>
-<body>
-    <!-- Website content -->
-
-    <script>
-        // Initialize HotLabel with basic configuration
-        HotLabel.init({
-            publisherId: 'tech-blog-001', // Unique identifier provided by HotLabel
-            triggerOptions: {
-                mode: 'adaptive', // Automatically trigger tasks based on user engagement
-                frequency: 'once-per-session' // Limit to one task per user session
-            }
-        });
-    </script>
-</body>
-</html>
+### NPM
+```bash
+npm install hotlabel-client
 ```
 
-### 2. Advanced Integration with Custom Triggering
-
-For more control, developers can manually trigger tasks:
-
+### CDN
 ```html
-<script>
-    // Initialize HotLabel
-    HotLabel.init({
-        publisherId: 'tech-blog-001',
-        triggerOptions: {
-            mode: 'manual' // Developer will control when tasks are shown
-        }
-    });
-
-    // Example: Trigger a task after user reads an article
-    function onArticleReadComplete() {
-        HotLabel.triggerTask({
-            taskType: 'content-annotation',
-            category: 'technology',
-            metadata: {
-                articleId: '123456',
-                articleTopic: 'AI Trends'
-            }
-        });
-    }
-
-    // Example: Trigger based on scroll depth
-    window.addEventListener('scroll', function() {
-        if (isArticleScrolledToBottom()) {
-            HotLabel.triggerTask({
-                taskType: 'feedback',
-                category: 'article-completion'
-            });
-        }
-    });
-</script>
+<script src="https://unpkg.com/hotlabel-client/dist/hotlabel.js"></script>
 ```
 
-### 3. React Single Page Application (SPA) Integration
+## Basic Usage
 
-For modern web applications:
+### Vanilla JavaScript
+```javascript
+HotLabel.init({
+  publisherId: 'your-publisher-id',
+  triggerOptions: {
+    mode: 'adaptive',
+    frequency: 'once-per-session'
+  }
+});
 
+// Manually trigger a task
+HotLabel.triggerTask({
+  taskType: 'content-annotation',
+  category: 'website-feedback'
+});
+```
+
+### React Integration
 ```jsx
-import React, { useEffect } from 'react';
+import HotLabel from 'hotlabel-client';
 
 function App() {
-    useEffect(() => {
-        // Initialize HotLabel when component mounts
-        window.HotLabel.init({
-            publisherId: 'react-app-001',
-            triggerOptions: {
-                mode: 'adaptive'
-            }
-        });
+  useEffect(() => {
+    HotLabel.init({
+      publisherId: 'your-publisher-id'
+    });
 
-        // Optional: Custom event tracking
-        const handleRouteChange = () => {
-            window.HotLabel.triggerTask({
-                taskType: 'page-interaction',
-                category: 'navigation'
-            });
-        };
+    // Listen for task completion
+    const handleTaskCompletion = (event) => {
+      const { task } = event.detail;
+      // Handle completed task
+    };
 
-        // Add route change listener
-        // This would depend on your routing library (React Router, etc.)
-    }, []);
+    window.addEventListener('hotlabel-task-completed', handleTaskCompletion);
 
-    return (
-        <div>
-            {/* Your app content */}
-        </div>
-    );
+    return () => {
+      window.removeEventListener('hotlabel-task-completed', handleTaskCompletion);
+    };
+  }, []);
 }
 ```
 
-### Key Integration Points
+## Configuration
 
-1. **Script Inclusion**: Always include the HotLabel script
-2. **Initialization**: Call `HotLabel.init()` with your publisher ID
-3. **Task Triggering**: 
-   - Use `adaptive` mode for automatic tasks
-   - Use `manual` mode for programmatic control
-   - Use `HotLabel.triggerTask()` to show labeling tasks
+### Options
+- `publisherId` (required): Unique identifier for your account
+- `triggerOptions`:
+  ```javascript
+  {
+    mode: 'adaptive', // 'adaptive', 'manual', 'scheduled'
+    frequency: 'once-per-session', // Task trigger frequency
+    minInteractionTime: 30, // Minimum user interaction time (seconds)
+    maxTasksPerDay: 3 // Maximum tasks per user per day
+  }
+  ```
+- `privacySettings`:
+  ```javascript
+  {
+    anonymize: true, // Anonymize collected data
+    consentRequired: true, // Require user consent
+    dataRetentionPeriod: 30 // Days to retain data
+  }
+  ```
 
-### Customization Options
+## Task Types
 
-- **Consent Management**: Configure privacy settings
-- **Task Frequency**: Control how often tasks appear
-- **Task Types**: Specify different labeling task categories
-- **Anonymization**: Ensure user privacy
+### Supported Task Types
+1. **Content Annotation**
+   - Collect user insights on content
+   - Ideal for content quality assessment
 
-### Best Practices
+2. **Feedback**
+   - Gather user opinions
+   - Collect ratings and comments
 
-- Always provide clear information about data collection
-- Allow users to opt-out
-- Keep tasks short and relevant
-- Compensate users for their time (optional)
+3. **Technical Labeling**
+   - Label technical content
+   - Categorize code snippets, documentation
 
-## Getting Started Checklist
+4. **Generic Task**
+   - Flexible task type
+   - Custom data collection
 
-1. Sign up for a HotLabel publisher account
-2. Receive your unique publisher ID
-3. Include the HotLabel script
-4. Initialize with your publisher ID
-5. Configure task triggering mode
-6. Test integration
+## Privacy Management
+
+### Consent and Opt-Out
+```javascript
+// Check current consent status
+const hasConsent = HotLabel.privacy.checkConsent();
+
+// Opt-out of data collection
+HotLabel.optOut();
+```
+
+## Advanced Integration
+
+### Event Listeners
+```javascript
+// Listen for task completion
+window.addEventListener('hotlabel-task-completed', (event) => {
+  const { task } = event.detail;
+  // Custom handling of completed task
+});
+```
+
+### Custom Task Triggering
+```javascript
+// Programmatically trigger tasks based on user interaction
+function triggerTaskOnSpecificCondition() {
+  HotLabel.triggerTask({
+    taskType: 'technical-labeling',
+    category: 'custom-category',
+    metadata: {
+      additionalContext: 'Optional additional information'
+    }
+  });
+}
+```
+
+## Troubleshooting
+
+- Ensure `publisherId` is correctly set
+- Check browser console for any initialization errors
+- Verify consent settings
+- Ensure minimum interaction requirements are met
+
+## Best Practices
+
+1. Always provide clear information about data usage
+2. Keep tasks short and relevant
+3. Respect user privacy
+4. Offer opt-out mechanisms
+5. Anonymize collected data
+
+## Support
+
+For additional support, please contact:
+- Email: support@hotlabel.ai
+- Documentation: https://docs.hotlabel.ai
